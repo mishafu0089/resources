@@ -1,1 +1,86 @@
 Answers go here!
+
+Problem 1: 
+So I got a segmentation fault in file test_game1 on line 252 when running it with input and output files.
+The segfault is due to a null pointer.
+Specifically, invaders[invaderRow][invaderCol], is null. 
+On line 249, invaders[invaderRow][invaderCol] is allocated as following:
+invaders[invaderRow][invaderRow] = new Warrior();
+
+However, it should be invaders[invaderRow][invaderCol] instead of two rows. 
+
+Problem 2:
+I got a wrong result due to line 27, there is a semicolon at the end.
+if (protector->weapon == weapon_axe && invader->weapon == weapon_sword);
+I deleted it, so it won't run unconditionally
+
+Problem 3: 
+
+
+
+
+
+
+
+Full commands for problem 1: 
+ch start csci104
+[csci104] started...
+mishafu@Mishas-MacBook-Pro ~ % ch shell csci104
+root@docker:/work$ cd resources
+root@docker:/work/resources$ make test_game1
+root@docker:/work/resources$ cd lab1
+root@docker:/work/resources/lab1$ make test_game1
+g++ -g3 -O0 -Wall --std=c++11 game_of_pointers_student1.cpp -o game_student1
+game_of_pointers_student1.cpp: In function 'std::string getDuelResult(Warrior*, Warrior*)':
+game_of_pointers_student1.cpp:27:5: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
+   27 |     if (protector->weapon == weapon_axe && invader->weapon == weapon_sword);
+      |     ^~
+game_of_pointers_student1.cpp:28:5: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+   28 |     {
+      |     ^
+******************************************************************
+                   Testing Student 1's Game
+******************************************************************
+./game_student1 input1.txt output1-stu1.txt
+make: *** [Makefile:18: test_game1] Segmentation fault
+root@docker:/work/resources/lab1$ gdb ./game_student1
+GNU gdb (Ubuntu 9.2-0ubuntu1~20.04.1) 9.2
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type "show copying" and "show warranty" for details.
+This GDB was configured as "aarch64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+    <http://www.gnu.org/software/gdb/documentation/>.
+
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from ./game_student1...
+(gdb) break main
+Breakpoint 1 at 0x1cc4: file game_of_pointers_student1.cpp, line 198.
+(gdb) run input1.txt output1-stu1.txt
+Starting program: /work/resources/lab1/game_student1 input1.txt output1-stu1.txt
+
+Breakpoint 1, main (argc=3, argv=0xfffffffffca8)
+    at game_of_pointers_student1.cpp:198
+198	{
+(gdb) c
+Continuing.
+
+Program received signal SIGSEGV, Segmentation fault.
+main (argc=3, argv=0xfffffffffca8) at game_of_pointers_student1.cpp:252
+252				invaders[invaderRow][invaderCol]->power = invaderRow * 10 + (invaderCol + 1) * 10;
+(gdb) print invaders[invaderRow][invaderCol]
+$1 = (Warrior *) 0x0
+(gdb) 
+
+
+
+
+
+
+
